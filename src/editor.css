@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css?family=Cormorant+Garamond');
+@import url('https://fonts.googleapis.com/css?family=EB+Garamond|Orbitron');
+
+
+html {
+  font: 11pt Cormorant Garamond, serif;
+  font-variant: prince-opentype(onum);
+}
+
+.burgermenu {
+   position: fixed !important; zIndex: 9999; left: 15px; top: 15px; z-index: 9999
+}
+
+[contenteditable=true] {
+    outline: 0;
+}
+
+[contenteditable=true]:empty::before {
+  content: attr(placeholder);
+  color: #AAA;
+}
+
+[contenteditable="true"].single-line {
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+}
+[contenteditable="true"].single-line br {
+    display:none;
+}
+[contenteditable="true"].single-line * {
+    display:inline;
+    white-space:nowrap;
+}
+
+@page {
+  font: 11pt Cormorant Garamond, serif;
+  font-variant: prince-opentype(onum);
+  size: 16cm 18cm;
+  margin: 20mm 20mm 25mm 20mm;
+
+  @footnotes {
+    border-top: thin solid black;
+    border-clip: 3em;
+    margin-top: 1em;
+    padding: 0.3em 0 0 0;
+  }
+
+}
+
+@prince-pdf {
+    prince-pdf-page-layout: two-column-right
+}
+
+@page :right {
+  @top-right {
+    content: string(title, first-except);
+  }
+  @bottom-right {
+    content: counter(page);
+  }
+}
+
+@page :left {
+  @top-left {
+    content: string(author, first-except);
+  }
+  @bottom-left {
+    content: counter(page);
+  }
+}
+
+@page cover {
+  margin: 0;
+  background-size: cover;
+}
+
+/*
+U+2019 right single quotation mark
+U+2013 en dash
+U+2014 em dash
+U+2008 punctuation space
+U+2009 thin space
+U+200A hair space
+U+202F narrow no-break space
+*/
+
+body {
+  columns: 2;
+  column-rule: thin solid red;
+  text-align: justify;
+  hyphens: auto;
+  prince-text-replace:
+    "\2014\2014" "\2013"
+    "\2014" "\2009\2014\2009"
+    "\2013" "\2014"
+    "'" "\2019"
+    "St. Petersburg" "Leningrad";
+}
+
+h1 {
+  string-set: title content();
+  text-align: center;
+}
+
+div.byline {
+  string-set: author content();
+  text-align: center;
+  margin: 1em;
+  text-indent: 0;
+}
+
+div.byline:before { content: "BY " }
+
+p {
+  margin: 0; padding: 0; text-indent: 1.5em;
+}
+
+p:first-of-type {
+  text-indent: 0;
+}
+
+section.cover {
+  page: cover;
+  color: red;
+}
+
+aside {
+  display: none;
+  float: outside;
+  margin-outside: -50mm;
+  width: 45mm;
+}
+
+aside img {
+  width: 100%;
+}
+
+figure {
+  float: column-top; /* top. column-top */
+  counter-increment: figure;
+  margin-bottom: 1em;
+}
+
+figure.wide {
+  float: top;
+}
+
+figure img {
+  width: 100%;
+}
+
+figcaption {
+  font-style: italic;
+}
+
+figcaption:before {
+   content: "Fig " counter(figure) ": ";
+}
+
+.cover header {
+  column-span: all;
+  width: 100%;
+  font: bold 30pt Cormorant Garamond, serif;
+  position: absolute;
+  bottom: 0;
+}
+
+.cover header {
+  font-weight: 900;
+}
+
+.fn {
+  float: prince-column-inline-footnote; /* footnote, prince-column-footnote, prince-column-inline-footnote */
+  footnote-style-position: inside;
+  margin: 0; padding: 0; text-indent: 0;
+}
+
+@media screen {
+  body {
+    columns: 1;
+    font: 20px EB Garamond, serif;
+
+  }
+  figure, .cover, .fn { display: none }
+}
